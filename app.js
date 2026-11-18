@@ -1,0 +1,10 @@
+import {analyzeUrl} from "./analyzer.js";
+const byId=id=>document.getElementById(id);
+let exampleIndex=0;
+const examples=["https://accounts.example.test/login","http://paypal.com.security-check.example.test/sign-in","https://xn--pple-43d.example.test/verify"];
+
+function findingNode(item){const article=document.createElement("article");article.className=`finding ${item.severity}`;const top=document.createElement("div");const title=document.createElement("strong");title.textContent=item.title;const points=document.createElement("span");points.textContent=`+${item.points}`;top.append(title,points);const explanation=document.createElement("p");explanation.textContent=item.explanation;const evidence=document.createElement("small");evidence.textContent=`Evidence: ${item.evidence}`;article.append(top,explanation,evidence);return article;}
+function render(){try{const result=analyzeUrl(byId("url-input").value);byId("score").textContent=result.score;byId("risk-label").textContent=result.label;byId("summary").textContent=result.verifiedStatement;byId("host").textContent=result.host;byId("scheme").textContent=result.scheme;byId("gauge").style.setProperty("--risk",`${result.score*3.6}deg`);byId("finding-count").textContent=`${result.findings.length} finding${result.findings.length===1?"":"s"}`;byId("recommendation").textContent=result.recommendation;const container=byId("findings");if(result.findings.length)container.replaceChildren(...result.findings.map(findingNode));else{const p=document.createElement("p");p.className="empty";p.textContent="No structural warning was found. This is not a safety verdict.";container.replaceChildren(p);}}catch(error){byId("summary").textContent=error.message;byId("risk-label").textContent="Input needs attention";}}
+byId("analyze").addEventListener("click",render);
+byId("examples").addEventListener("click",()=>{byId("url-input").value=examples[exampleIndex++%examples.length];render();});
+for(const button of document.querySelectorAll("[data-example]"))button.addEventListener("click",()=>{byId("url-input").value=button.dataset.example;render();});

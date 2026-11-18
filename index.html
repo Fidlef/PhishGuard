@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Local, explainable URL structure analysis without visiting the destination.">
+  <title>PhishGuard — Explainable URL triage</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">Skip to analyzer</a>
+  <header class="nav">
+    <a href="./" class="brand"><span>PG</span>PhishGuard</a>
+    <div class="local-badge">● LOCAL ANALYSIS</div>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">DEFENSIVE URL TRIAGE</p>
+        <h1>Inspect the address.<br><em>Never open it.</em></h1>
+        <p>PhishGuard explains suspicious URL structure without navigating to the destination, resolving the domain, or making a network request.</p>
+      </div>
+      <aside><strong>Safe-by-design boundary</strong><p>The tool evaluates text only. It cannot confirm whether a site is malicious, online, encrypted, or trustworthy.</p></aside>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <article class="input-panel">
+        <div class="panel-title"><div><p>01 / INPUT</p><h2>URL under review</h2></div><button id="examples" type="button">Load synthetic example</button></div>
+        <label for="url-input">Paste a URL</label>
+        <textarea id="url-input" spellcheck="false" autocapitalize="off" placeholder="https://accounts.example.test/login"></textarea>
+        <p class="privacy">Do not paste private tokens or real credentials. The value stays in this tab.</p>
+        <button class="primary" id="analyze" type="button">Analyze structure</button>
+        <div class="example-list" aria-label="Synthetic examples">
+          <button type="button" data-example="https://accounts.example.test/login">Low-warning example</button>
+          <button type="button" data-example="http://paypal.com.security-check.example.test/sign-in">Misleading subdomain</button>
+          <button type="button" data-example="https://xn--pple-43d.example.test/verify">Punycode example</button>
+        </div>
+      </article>
+
+      <article class="result-panel" aria-live="polite">
+        <p class="step">02 / ASSESSMENT</p>
+        <div class="risk-head">
+          <div class="gauge" id="gauge"><span id="score">—</span><small>/100</small></div>
+          <div><span class="micro">HEURISTIC RISK</span><h2 id="risk-label">Waiting for input</h2><p id="summary">No URL has been analyzed.</p></div>
+        </div>
+        <div class="facts" id="facts">
+          <div><span>Host</span><strong id="host">—</strong></div>
+          <div><span>Declared scheme</span><strong id="scheme">—</strong></div>
+          <div><span>Network verification</span><strong>Not performed</strong></div>
+        </div>
+        <div class="section-heading"><h3>Explainable findings</h3><span id="finding-count">0 findings</span></div>
+        <div id="findings" class="findings"><p class="empty">Analyze a synthetic URL to see why each warning appears.</p></div>
+        <div class="recommendations"><h3>Recommended next step</h3><p id="recommendation">Avoid opening an uncertain link. Verify the sender and use a known official bookmark instead.</p></div>
+      </article>
+    </section>
+
+    <section class="method">
+      <p class="eyebrow">HOW TO READ THE RESULT</p>
+      <div class="method-grid">
+        <article><span>FACT</span><h3>Parsed structure</h3><p>Scheme, host, port, path, and embedded credentials come directly from the supplied text.</p></article>
+        <article><span>HEURISTIC</span><h3>Risk signals</h3><p>Lookalike words, deep subdomains, IP hosts, and unusual encoding increase review priority but are not proof.</p></article>
+        <article><span>NOT CHECKED</span><h3>Remote reputation</h3><p>PhishGuard never visits the address, checks a certificate, or asks a reputation service.</p></article>
+      </div>
+    </section>
+  </main>
+  <footer><span>PhishGuard</span><span>Explain first. Verify separately.</span></footer>
+</body>
+</html>
